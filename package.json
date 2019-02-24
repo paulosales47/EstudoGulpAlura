@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/paulosales47/EstudoGulpAlura/issues"
   },
-  "homepage": "https://github.com/paulosales47/EstudoGulpAlura#readme"
+  "homepage": "https://github.com/paulosales47/EstudoGulpAlura#readme",
+  "devDependencies": {
+    "gulp": "^4.0.0"
+  }
 }
