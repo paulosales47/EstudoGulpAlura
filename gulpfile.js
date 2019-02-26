@@ -2,6 +2,7 @@ let gulp = require('gulp');
 let imagemin = require('gulp-imagemin');
 let clean = require('gulp-clean');
 let concat = require('gulp-concat');
+let htmlReplace = require('gulp-html-replace');
 
 function clearDist(){
     return gulp.src('dist/**.*', {read: false})
@@ -20,11 +21,22 @@ function buildImg(){
 }
 
 function buildJs(){
-    return gulp.src('dist/js/**/*.js')
+    return gulp.src([
+        'dist/js/jquery.js',
+        'dist/js/home.js',
+        'dist/js/produto.js'
+    ])
         .pipe(concat('all.js'))
-        .pipe(gulp.dest('dist/js'))
+        .pipe(gulp.dest('dist/js'));
 }
 
+function buildHtml(){
+    return gulp.src('dist/**/*.html')
+        .pipe(htmlReplace({
+            js: 'js/all.js'
+        }))
+        .pipe(gulp.dest('dist'));
+}
 
 
 exports.default =
@@ -33,6 +45,7 @@ exports.default =
         copy, 
     gulp.parallel(
         buildImg,
-        buildJs
+        buildJs,
+        buildHtml
     ));
 
