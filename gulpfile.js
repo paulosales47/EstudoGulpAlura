@@ -14,14 +14,14 @@ function copy(){
         .pipe(gulp.dest('dist'));
 }
 
-function buildImg(){
-    return gulp.src('dist/img/**/*')
+async function buildImg(){
+    await gulp.src('dist/img/**/*')
         .pipe(imagemin())
         .pipe(gulp.dest('dist/img'));
 }
 
-function buildJs(){
-    return gulp.src([
+async function buildJs(){
+    await gulp.src([
         'dist/js/jquery.js',
         'dist/js/home.js',
         'dist/js/produto.js'
@@ -30,8 +30,8 @@ function buildJs(){
         .pipe(gulp.dest('dist/js'));
 }
 
-function buildHtml(){
-    return gulp.src('dist/**/*.html')
+async function buildHtml(){
+    await gulp.src('dist/**/*.html')
         .pipe(htmlReplace({
             js: 'js/all.js'
         }))
