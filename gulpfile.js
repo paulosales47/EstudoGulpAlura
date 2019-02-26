@@ -1,9 +1,9 @@
 let gulp = require('gulp');
 let imagemin = require('gulp-imagemin');
 let clean = require('gulp-clean');
-let concat = require('gulp-concat');
-let htmlReplace = require('gulp-html-replace');
 let uglify = require('gulp-uglify');
+let usemin = require('gulp-usemin');
+let cssmin = require('gulp-cssmin');
 
 function clearDist(){
     return gulp.src('dist/**.*', {read: false})
@@ -21,25 +21,14 @@ async function buildImg(){
         .pipe(gulp.dest('dist/img'));
 }
 
-async function buildJs(){
-    await gulp.src([
-        'dist/js/jquery.js',
-        'dist/js/home.js',
-        'dist/js/produto.js'
-    ])
-        .pipe(concat('all.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('dist/js'));
+async function buildResources(){
+    gulp.src('dist/**/*.html')
+    .pipe(usemin({
+        'js': [uglify],
+        'css': [cssmin]
+    }))
+    .pipe(gulp.dest('dist'))
 }
-
-async function buildHtml(){
-    await gulp.src('dist/**/*.html')
-        .pipe(htmlReplace({
-            js: 'js/all.js'
-        }))
-        .pipe(gulp.dest('dist'));
-}
-
 
 exports.default =
      gulp.series(
@@ -47,7 +36,6 @@ exports.default =
         copy, 
     gulp.parallel(
         buildImg,
-        buildJs,
-        buildHtml
+        buildResources
     ));
 
