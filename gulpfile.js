@@ -3,6 +3,7 @@ let imagemin = require('gulp-imagemin');
 let clean = require('gulp-clean');
 let concat = require('gulp-concat');
 let htmlReplace = require('gulp-html-replace');
+let uglify = require('gulp-uglify');
 
 function clearDist(){
     return gulp.src('dist/**.*', {read: false})
@@ -27,6 +28,7 @@ async function buildJs(){
         'dist/js/produto.js'
     ])
         .pipe(concat('all.js'))
+        .pipe(uglify())
         .pipe(gulp.dest('dist/js'));
 }
 
