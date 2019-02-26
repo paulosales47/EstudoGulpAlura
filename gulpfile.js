@@ -4,6 +4,7 @@ let clean = require('gulp-clean');
 let uglify = require('gulp-uglify');
 let usemin = require('gulp-usemin');
 let cssmin = require('gulp-cssmin');
+let browserSync = require('browser-sync');
 
 function clearDist(){
     return gulp.src('dist/**.*', {read: false})
@@ -30,6 +31,15 @@ async function buildResources(){
     .pipe(gulp.dest('dist'))
 }
 
+function server(){
+    browserSync.init({
+        server: { baseDir: 'src'}
+    });
+
+    gulp.watch('src/**/*', )
+    .on('change', browserSync.reload);
+}
+
 exports.default =
      gulp.series(
         clearDist, 
@@ -39,3 +49,5 @@ exports.default =
         buildResources
     ));
 
+
+exports.server = gulp.series(server);

@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/paulosales47/EstudoGulpAlura#readme",
   "devDependencies": {
+    "browser-sync": "^2.26.3",
     "gulp": "^4.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-cssmin": "^0.2.0",
