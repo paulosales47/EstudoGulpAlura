@@ -5,6 +5,8 @@ let uglify = require('gulp-uglify');
 let usemin = require('gulp-usemin');
 let cssmin = require('gulp-cssmin');
 let browserSync = require('browser-sync');
+let jshint = require('gulp-jshint');
+let jshintStylish = require('jshint-stylish')
 
 function clearDist(){
     return gulp.src('dist/**.*', {read: false})
@@ -35,9 +37,13 @@ function server(){
     browserSync.init({
         server: { baseDir: 'src'}
     });
+    gulp.watch('src/**/*').on('change', browserSync.reload);
 
-    gulp.watch('src/**/*', )
-    .on('change', browserSync.reload);
+    return gulp.watch("src/js/*.js").on('change', function(path){
+        gulp.src(path)
+        .pipe(jshint())
+        .pipe(jshint.reporter(jshintStylish));
+    });
 }
 
 exports.default =
@@ -48,6 +54,5 @@ exports.default =
         buildImg,
         buildResources
     ));
-
 
 exports.server = gulp.series(server);
