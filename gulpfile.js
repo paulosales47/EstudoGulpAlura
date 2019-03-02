@@ -6,7 +6,8 @@ let usemin = require('gulp-usemin');
 let cssmin = require('gulp-cssmin');
 let browserSync = require('browser-sync');
 let jshint = require('gulp-jshint');
-let jshintStylish = require('jshint-stylish')
+let jshintStylish = require('jshint-stylish');
+let cssLint = require('gulp-csslint');
 
 function clearDist(){
     return gulp.src('dist/**.*', {read: false})
@@ -39,10 +40,16 @@ function server(){
     });
     gulp.watch('src/**/*').on('change', browserSync.reload);
 
-    return gulp.watch("src/js/*.js").on('change', function(path){
+    gulp.watch("src/js/*.js").on('change', function(path){
         gulp.src(path)
         .pipe(jshint())
         .pipe(jshint.reporter(jshintStylish));
+    });
+
+    gulp.watch("src/css/*.css").on('change', function(path){
+        gulp.src(path)
+        .pipe(cssLint())
+        .pipe(cssLint.formatter());
     });
 }
 
