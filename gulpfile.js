@@ -8,6 +8,8 @@ let browserSync = require('browser-sync');
 let jshint = require('gulp-jshint');
 let jshintStylish = require('jshint-stylish');
 let cssLint = require('gulp-csslint');
+let autoprefixer = require('gulp-autoprefixer');
+let less = require('gulp-less');
 
 function clearDist(){
     return gulp.src('dist/**.*', {read: false})
@@ -17,6 +19,12 @@ function clearDist(){
 function copy(){
     return gulp.src('src/**/*')
         .pipe(gulp.dest('dist'));
+}
+
+function buildLess(){
+    return gulp.src("src/less/*.less")
+    .pipe(less())
+    .pipe(gulp.dest("src/css"));
 }
 
 async function buildImg(){
@@ -29,7 +37,7 @@ async function buildResources(){
     gulp.src('dist/**/*.html')
     .pipe(usemin({
         'js': [uglify],
-        'css': [cssmin]
+        'css': [autoprefixer, cssmin]
     }))
     .pipe(gulp.dest('dist'))
 }
@@ -50,12 +58,22 @@ function server(){
         gulp.src(path)
         .pipe(cssLint())
         .pipe(cssLint.formatter());
+        
+    });
+
+    gulp.watch("src/less/*.less").on('change', function(path){
+        gulp.src(path.replace(/\\/g, '/'))
+        .pipe(less().on('error', function(error){
+            console.log(error);
+        }))
+        .pipe(gulp.dest('src/css'));
     });
 }
 
 exports.default =
      gulp.series(
         clearDist, 
+        buildLess,
         copy, 
     gulp.parallel(
         buildImg,
